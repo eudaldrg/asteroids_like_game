@@ -1,1 +1,5 @@
-Environment (MinGW/Cygwin) is not selected
+/home/audi/software/clion-2017.1/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/audi/asteroids_like_game/asteroids/src
+-- Found SFML 2.4.2 in /home/audi/software/SFML-2.4.2/include
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/audi/asteroids_like_game/asteroids/src/cmake-build-debug

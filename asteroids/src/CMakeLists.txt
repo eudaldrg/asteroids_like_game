@@ -1,3 +1,43 @@
 cmake_minimum_required (VERSION 2.6)
-project (Asteroids)
-add_executable(Asteroids asteroids_main.cpp)
+project(Asteroids)
+
+# By default, enable debug
+if(CMAKE_BUILD_TYPE STREQUAL "")
+  set(CMAKE_BUILD_TYPE Debug)
+endif()
+
+# Set C++ 11
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+if(COMPILER_SUPPORTS_CXX11)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif(COMPILER_SUPPORTS_CXX0X)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+else()
+        message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+endif()
+
+set(EXECUTABLE_NAME "Asteroids") # Store variable
+file(GLOB SOURCES "*.cpp") # Store all cpp in SOURCES
+
+add_executable(${EXECUTABLE_NAME} ${SOURCES} game.h game.cpp resource_holder.inl resource_holder.hpp resource_enum_classes.h entity.cpp entity.h aircraft.h scene_node.h scene_node.cpp aircraft.cpp world.cpp world.h sprite_node.cpp sprite_node.h) # Create one exec from all the cpp in sources
+
+# Find and add SFML
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+# Find at least version 2.0
+find_package(SFML 2 COMPONENTS system window graphics audio REQUIRED)
+
+if(SFML_FOUND)
+  include_directories(${SFML_INCLUDE_DIR})
+  target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES})
+endif()
+
+# Find and add LUA
+#set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+# Find at least version 2.0
+#find_package(LUA 2 COMPONENTS system window graphics audio REQUIRED)
+#if(LUA_FOUND)
+#  include_directories(${LUA_INCLUDE_DIR})
+#  target_link_libraries(${EXECUTABLE_NAME} ${LUA_LIBRARIES})
+#endif()
